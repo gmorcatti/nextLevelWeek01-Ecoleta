@@ -1,6 +1,7 @@
 import {Request, Response} from 'express'
 
 import knex from '../database/connection'
+import baseUrl from '../baseUrl'
 
 class PointsController {
     async create(request:Request, response:Response) {
@@ -53,6 +54,7 @@ class PointsController {
     }
 
     async show(request: Request, response: Response){
+       
         const { id } = request.params;
         const point = await knex('points').where('id', id).first();
 
@@ -62,7 +64,7 @@ class PointsController {
 
         const serializedPoint = {
             ...point,
-            image_url: `http://192.168.0.19:3333/uploads/${point.image}`,
+            image_url: `${baseUrl}/uploads/${point.image}`,
         }
 
         const items = await knex('items')
@@ -91,7 +93,7 @@ class PointsController {
         const serializedPoints = points.map(point => {
             return {
                 ...point,
-                image_url: `http://192.168.0.19:3333/uploads/${point.image}`,
+                image_url: `${baseUrl}/uploads/${point.image}`,
             };
         })
 
